@@ -1,4 +1,5 @@
 ﻿using Common;
+using Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Helper
     public static class ShoppingList
     {
         public static Dictionary<int, int> boxList = new Dictionary<int, int>();
+
+        //Sepete kutu ekler.
         public static ServiceResult AddBox(int boxId)
         {
 
@@ -22,6 +25,7 @@ namespace Helper
 
             HttpContext.Current.Session.Clear();
             HttpContext.Current.Session["sepet"] = boxList;
+
             UpdateSession();
             boxList.Add(boxId, 1);
 
@@ -46,24 +50,22 @@ namespace Helper
             HttpContext.Current.Session["sepet"] = boxList;
         }
 
+        //Kutuların ID lerine ulaşmak için kullanılır.
         public static List<int> GetBoxesKeysInBasket()
         {
             var basket = (Dictionary<int, int>)HttpContext.Current.Session["sepet"];
             List<int> selectedBoxes = new List<int>();
-            if (basket.Keys != null)
+            if (basket == null)
             {
-                selectedBoxes = basket.Keys.ToList();
+                return selectedBoxes;
             }
+            selectedBoxes = basket.Keys.ToList();
             return selectedBoxes;
         }
 
-        public static Dictionary<int,int> GetBoxesInBasket()
-        {
-            var basket = (Dictionary<int, int>)HttpContext.Current.Session["sepet"];
-            
-            return basket;
-        }
 
+
+       
 
     }
 }
